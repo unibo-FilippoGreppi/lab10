@@ -18,6 +18,7 @@ dependencies {
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.3")
+
 }
 
 val mainClass: String by project

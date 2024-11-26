@@ -1,6 +1,10 @@
 package it.unibo.mvc;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,7 +14,10 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
     private static final int MIN = 0;
     private static final int MAX = 100;
     private static final int ATTEMPTS = 10;
-
+    private static final String FILE_NAME = "resources" + File.separator + "config.yml";
+    private  int max; 
+    private  int min;
+    private  int attempts;
     private final DrawNumber model;
     private final List<DrawNumberView> views;
 
@@ -27,9 +34,25 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
             view.setObserver(this);
             view.start();
         }
-        this.model = new DrawNumberImpl(MIN, MAX, ATTEMPTS);
+        readFromFile();
+        this.model = new DrawNumberImpl(min, max, attempts);
     }
 
+    private void readFromFile() {
+        try (final BufferedReader in = new BufferedReader(new FileReader(FILE_NAME))) {
+            final String[] firstLine = in.readLine().split(":");
+            final String[] secondLine = in.readLine().split(":");
+            final String[] thirdLine = in.readLine().split(":");
+            this.min = Integer.parseInt(firstLine[firstLine.length - 1]);
+            this.max = Integer.parseInt(secondLine[secondLine.length - 1]);
+            this.attempts = Integer.parseInt(thirdLine[thirdLine.length - 1]);
+        } catch(IOException e) {
+            this.min = MIN;
+            this.max = MAX;
+            this.attempts = ATTEMPTS;
+        }
+    }
+    
     @Override
     public void newAttempt(final int n) {
         try {
@@ -66,7 +89,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @throws FileNotFoundException 
      */
     public static void main(final String... args) throws FileNotFoundException {
-        new DrawNumberApp(new DrawNumberViewImpl());
+        new DrawNumberApp(new DrawNumberViewImpl()); 
     }
 
 }
