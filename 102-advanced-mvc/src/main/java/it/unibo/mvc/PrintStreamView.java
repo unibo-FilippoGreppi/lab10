@@ -12,7 +12,6 @@ import java.io.PrintStream;
  * This class implements a view that can write on any PrintStream.
  */
 public final class PrintStreamView implements DrawNumberView {
-
     private final PrintStream out;
 
     /**

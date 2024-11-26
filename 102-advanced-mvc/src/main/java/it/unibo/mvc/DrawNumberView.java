@@ -1,7 +1,7 @@
 package it.unibo.mvc;
 
 /**
- *
+ * This interface represents the view of the application.
  */
 public interface DrawNumberView {
 
